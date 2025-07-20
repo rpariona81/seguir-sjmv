@@ -1,0 +1,118 @@
+use laboratorio_ci;
+
+DROP TABLE IF EXISTS `t_settings`;
+
+CREATE TABLE
+  `t_settings` (
+    `id` bigint (20) unsigned NOT NULL AUTO_INCREMENT,
+    `client_ruc_uid` varchar(25) NOT NULL,
+    `client_alias` varchar(255) DEFAULT NULL,
+    `client_display` varchar(255) DEFAULT NULL,
+    `client_type` varchar(255) DEFAULT NULL,
+    `client_logo` varchar(255) DEFAULT NULL,
+    `client_weburl` varchar(255) DEFAULT NULL,
+    `client_slogan` varchar(255) DEFAULT NULL,
+    `client_info` varchar(255) DEFAULT NULL,
+    `client_max_users` int (8) DEFAULT NULL,
+    `client_license` varchar(255) DEFAULT NULL,
+    `client_date_license` date DEFAULT NULL,
+    `client_address` varchar(255) DEFAULT NULL,
+    `failed_at` timestamp NOT NULL DEFAULT current_timestamp(),
+    `created_at` timestamp NULL DEFAULT NULL,
+    `updated_at` timestamp NULL DEFAULT NULL,
+    `deleted_at` timestamp NULL DEFAULT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `u_ruc_uid` (`client_ruc_uid`),
+    UNIQUE KEY `u_display` (`client_display`)
+  ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
+
+DROP TABLE IF EXISTS `t_sessions_egres`;
+
+CREATE TABLE
+  `t_sessions_egres` (
+    `id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+    `user_id` bigint (20) unsigned DEFAULT NULL,
+    `ip_address` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+    `user_agent` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+    `payload` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+    `last_activity` int (11) DEFAULT NULL,
+    `data` blob DEFAULT NULL,
+    `timestamp` timestamp NULL DEFAULT NULL,
+    PRIMARY KEY (`id`),
+    KEY `t_sessions_user_id_index` (`user_id`),
+    KEY `t_sessions_last_activity_index` (`last_activity`)
+  ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
+
+DROP TABLE IF EXISTS `t_encuestas`;
+
+CREATE TABLE
+  `t_encuestas` (
+    `id` bigint (20) unsigned NOT NULL AUTO_INCREMENT,
+    `user_id` bigint (20) unsigned NOT NULL,
+    `flag_start` tinyint (1) DEFAULT 0,
+    `flag_end` tinyint (1) DEFAULT 0,
+    `var1` date DEFAULT NULL,
+    `var2` varchar(100) DEFAULT NULL,
+    `var3` varchar(100) DEFAULT NULL,
+    `var4` varchar(100) DEFAULT NULL,
+    `var5` varchar(20) DEFAULT NULL,
+    `var6` varchar(20) DEFAULT NULL,
+    `var7` varchar(4) DEFAULT NULL,
+    `var8` varchar(100) DEFAULT NULL,
+    `var9` varchar(10) DEFAULT NULL,
+    `var10` varchar(10) DEFAULT NULL,
+    `var11` varchar(4) DEFAULT NULL,
+    `var12` varchar(4) DEFAULT NULL,
+    `var13` varchar(4) DEFAULT NULL,
+    `var14` varchar(100) DEFAULT NULL,
+    `var15` varchar(100) DEFAULT NULL,
+    `var16` varchar(100) DEFAULT NULL,
+    `var17` varchar(4) DEFAULT NULL,
+    `var18` varchar(100) DEFAULT NULL,
+    `var19` varchar(100) DEFAULT NULL,
+    `var20` varchar(100) DEFAULT NULL,
+    `var21` varchar(100) DEFAULT NULL,
+    `var22_1` varchar(40) DEFAULT NULL,
+    `var22_2` varchar(40) DEFAULT NULL,
+    `var22_3` varchar(40) DEFAULT NULL,
+    `var22_4` varchar(40) DEFAULT NULL,
+    `var22_5` varchar(40) DEFAULT NULL,
+    `var22_6` varchar(40) DEFAULT NULL,
+    `var22_7` varchar(40) DEFAULT NULL,
+    `var22_8` varchar(40) DEFAULT NULL,
+    `var23` varchar(4) DEFAULT NULL,
+    `var24` varchar(4) DEFAULT NULL,
+    `var25` varchar(200) DEFAULT NULL,
+    `var26` varchar(50) DEFAULT NULL,
+    `var27_1` varchar(20) DEFAULT NULL,
+    `var27_2` varchar(100) DEFAULT NULL,
+    `var28` varchar(4) DEFAULT NULL,
+    `var29` varchar(40) DEFAULT NULL,
+    `var30` varchar(40) DEFAULT NULL,
+    `var31` varchar(100) DEFAULT NULL,
+    `var32` varchar(4) DEFAULT NULL,
+    `var33` varchar(4) DEFAULT NULL,
+    `var34` varchar(4) DEFAULT NULL,
+    `var35` varchar(4) DEFAULT NULL,
+    `var36` varchar(4) DEFAULT NULL,
+    `var37` varchar(4) DEFAULT NULL,
+    `var38` varchar(4) DEFAULT NULL,
+    `var39` varchar(4) DEFAULT NULL,
+    `var40` varchar(4) DEFAULT NULL,
+    `var41` varchar(4) DEFAULT NULL,
+    `var42` varchar(4) DEFAULT NULL,
+    `var43` varchar(4) DEFAULT NULL,
+    `var44` varchar(4) DEFAULT NULL,
+    `var45` varchar(4) DEFAULT NULL,
+    `var46` varchar(4) DEFAULT NULL,
+    `var47` varchar(4) DEFAULT NULL,
+    `var48` varchar(4) DEFAULT NULL,
+    `var49` varchar(4) DEFAULT NULL,
+    `var50` varchar(4) DEFAULT NULL,
+    `status` tinyint (1) NOT NULL DEFAULT 1,
+    `failed_at` timestamp NOT NULL DEFAULT current_timestamp(),
+    `created_at` timestamp NULL DEFAULT NULL,
+    `updated_at` timestamp NULL DEFAULT NULL,
+    `deleted_at` timestamp NULL DEFAULT NULL,
+    PRIMARY KEY (`id`)
+  ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
