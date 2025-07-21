@@ -12,7 +12,7 @@
             <p class="col-md-12 fs-4">
                 Te invitamos a contestar la siguiente encuesta para poder conocer tu actual desarrollo profesional y/o académico, 
                 esperamos contar con tu honesta información, que nos ayudará a mejorar nuestro servicio.</p>
-            <button class="btn btn-primary btn-lg" type="button">Iniciar encuesta</button>
+            <a class="btn btn-outline-success" href="<?=site_url('users/encuesta')?>">Iniciar encuesta</a>
         </div>
     </div>
 

@@ -93,7 +93,7 @@ class HomeController extends CI_Controller
 		$this->load->library('LoginLib');
 		$util = new LoginLib();
 		$checkUser = $util->getLogin($login, $password);
-		//print_r('checkUser'.$checkUser);
+		print_r($checkUser);
 		$this->session->set_flashdata('error', $checkUser['error']);
 		return $checkUser['isLogged'];
 		/*if($checkUser->isLogged){

@@ -8,13 +8,15 @@ class LoginLib
 
     private $ci;
     protected $isLogged;
+    protected $userValidate;
+    protected $arrayLogin;
 
     public function __construct()
     {
         $this->ci = &get_instance(); // Esto para acceder a la instancia que carga la librería
         //$this->ci->load->model('Usereloquent');
         //$this->ci->load->model('Roleeloquent');
-        //$this->isLogged = FALSE;
+        $this->isLogged = FALSE;
     }
 
     public function getLogin($user, $pass)
@@ -22,48 +24,79 @@ class LoginLib
         $this->ci->load->model('Usereloquent');
         $this->ci->load->model('Admineloquent');
         try {
-            $user = !empty(UserEloquent::getUserBy('username', $user)) ? UserEloquent::getUserBy('username', $user) : AdminEloquent::getAdminBy('username', $user);
-            if ($user->status) {
-                if (password_verify($pass, $user['password'])) {
-                    //$this->isLogged = TRUE;
-                    $this->ci->load->model('Roleeloquent');
-                    $rol = RoleEloquent::findOrFail($user['role_id']);
-                    if ($rol) {
-                        $arrayUser = array(
-                            'user_login' => $user['username'],
-                            'user_name' => $user['name'],
-                            'user_paterno' => $user['paternal_surname'],
-                            'user_carrera_id' => $user['career_id'],
-                            'user_carrera' => $user['career_title'],
-                            'user_email' => $user['email'],
-                            'user_id' => $user['id'],
-                            'user_role' => $rol['rolename'],
-                            'user_condicion' => $user['graduated'],
-                            'user_role_id' => $user['role_id'],
-                            'user_role_title' => $rol['slug'],
-                            'user_guard' => $rol['guard_name']
-                        );
-                        $this->ci->session->set_userdata($arrayUser);
-                        $this->isLogged = TRUE;
-                        $this->ci->session->set_userdata('isLogged', $this->isLogged);
+            //$userValidate = !empty(UserEloquent::getUserBy('username', $user)) ? UserEloquent::getUserBy('username', $user) : AdminEloquent::getAdminBy('username', $user);
+            $userValidate = UserEloquent::getUserBy('username', $user) != NULL ? UserEloquent::getUserBy('username', $user) : AdminEloquent::getAdminBy('username', $user);
+            if ($userValidate != NULL) {
+                if ($userValidate->status) {
+                    if (password_verify($pass, $userValidate['password'])) {
+                        //$this->isLogged = TRUE;
+                        $this->ci->load->model('Roleeloquent');
+                        $rol = RoleEloquent::findOrFail($userValidate['role_id']);
+                        if ($rol) {
+                            $arrayUser = array(
+                                'user_login' => $userValidate['username'],
+                                'user_name' => $userValidate['name'],
+                                'user_paterno' => $userValidate['paternal_surname'],
+                                'user_carrera_id' => $userValidate['career_id'],
+                                'user_carrera' => $userValidate['career_title'],
+                                'user_email' => $userValidate['email'],
+                                'user_id' => $userValidate['id'],
+                                'user_role' => $rol['rolename'],
+                                'user_condicion' => $userValidate['graduated'],
+                                'user_role_id' => $userValidate['role_id'],
+                                'user_role_title' => $rol['slug'],
+                                'user_guard' => $rol['guard_name']
+                            );
+                            $this->ci->session->set_userdata($arrayUser);
+                            $this->isLogged = TRUE;
+                            $this->ci->session->set_userdata('isLogged', $this->isLogged);
+                            $arrayLogin = array(
+                                'error' => NULL,
+                                'isLogged' => FALSE,
+                            );
+                        } else {
+                            $this->ci->session->set_flashdata('Contacte con su administrador.');
+                            $this->isLogged = FALSE;
+                            $arrayLogin = array(
+                                'error' => 'Contacte con su administrador.',
+                                'isLogged' => FALSE,
+                            );
+                        }
                     } else {
-                        $this->ci->session->set_flashdata('Contacte con su administrador.');
+                        $this->ci->session->set_flashdata('Error de usuario y/o contraseña.');
                         $this->isLogged = FALSE;
+                        $arrayLogin = array(
+                            'error' => 'Error de usuario y/o contraseña.',
+                            'isLogged' => FALSE,
+                        );
                     }
                 } else {
-                    $this->ci->session->set_flashdata('Error de usuario y/o contraseña.');
+                    $this->ci->session->set_flashdata('Este usuario está desactivado.');
                     $this->isLogged = FALSE;
+                    $arrayLogin = array(
+                        'error' => 'Este usuario está desactivado.',
+                        'isLogged' => FALSE,
+                    );
                 }
             } else {
-                $this->ci->session->set_flashdata('Este usuario no existe o está desactivado.');
+                $this->ci->session->set_flashdata('Este usuario no existe.');
                 $this->isLogged = FALSE;
+                $arrayLogin = array(
+                    'error' => 'Este usuario no existe.',
+                    'isLogged' => FALSE,
+                );
             }
         } catch (Exception $e) {
 
             $this->ci->session->set_flashdata($e->getMessage());
             $this->isLogged = FALSE;
+            $arrayLogin = array(
+                'error' => $e->getMessage(),
+                'isLogged' => FALSE,
+            );
         }
-        return $this->isLogged;
+        //return $this->isLogged;
+        return $arrayLogin;
     }
 
 
